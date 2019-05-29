@@ -1,7 +1,6 @@
 module.exports = myTasks;
-//tell grunt what we want it to do
-//register the package
-function  myTasks(grunt) {
+
+function myTasks(grunt) {
     grunt.initConfig({
         browserify: {
             main: {
@@ -11,15 +10,17 @@ function  myTasks(grunt) {
         },
 
         copy: {
-            main:{
-                files: [{
-                    expand: true,
-                    flatten: true,
-                    src: [
-                          'client/**/*.html'
-                    ],
-                    dest: 'dist/'
-                }]
+            main: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: [
+                            'client/**/*.html'
+                        ],
+                        dest: 'dist/'
+                    }
+                ]
             },
             vendor: {
                 files: [
@@ -32,26 +33,28 @@ function  myTasks(grunt) {
                 ]
             }
         },
+
         clean: {
             all: ['dist/*'],
             vendor: ['dist/vendor/*'],
-            main: ['dist/**/*.html', 'dist/**/*.html', '!dist/vendor/**.*']
+            main: ['dist/**/*.js', 'dist/**/*.html', '!dist/vendor/**.*']
         },
-        watch:{
+
+        watch: {
             main: {
-                files: ['client/**/js' , 'client/**/*.html'],
-                tasks: ['clean:main','browserify:main', 'copy:main' , ],
+                files: ['client/**/*.js', 'client/**/*.html'],
+                tasks: ['clean:main', 'browserify:main', 'copy:main'],
                 options: {
                     livereload: true
                 }
             }
         }
     });
-    // it runs in order you tell it to.
+
     grunt.registerTask('default', ['clean:all', 'build']);
-    grunt.registerTask('dev', ['default','watch']);
-    grunt.registerTask('build', ['browserify','copy']);
-    // grunt.registerTask('test', ['lint', 'prettify']);
+    grunt.registerTask('dev', ['default', 'watch']);
+    grunt.registerTask('build', ['browserify', 'copy']);
+
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
